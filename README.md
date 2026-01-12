@@ -69,7 +69,7 @@ Clone o repositório:
 
 ```Bash
 
-git clone [https://github.com/seu-usuario/ToroTrade.git](https://github.com/seu-usuario/ToroTrade.git)
+git clone https://github.com/ThaisScheiner/ToroTrade-Case.git
 ```
 
 Restaure os pacotes:

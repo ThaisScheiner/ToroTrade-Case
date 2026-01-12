@@ -29,5 +29,10 @@ namespace ToroTrade.Application.Services
 
             return order.Id;
         }
+
+        public async Task<IEnumerable<Order>> GetAllOrdersAsync()
+        {
+            return await _repository.GetAllAsync();
+        }
     }
 }

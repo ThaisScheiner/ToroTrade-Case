@@ -31,5 +31,11 @@ namespace ToroTrade.Infrastructure.Persistence
             _context.Orders.Update(order);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Order>> GetAllAsync()
+        {
+            // O ToListAsync retorna todos os registros da tabela em memória
+            return await _context.Orders.ToListAsync();
+        }
     }
 }

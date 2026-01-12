@@ -10,5 +10,7 @@ namespace ToroTrade.Domain.Interfaces
         Task AddAsync(Order order);
         Task<Order?> GetByIdAsync(Guid id);
         Task UpdateAsync(Order order);
+
+        Task<IEnumerable<Order>> GetAllAsync();
     }
 }

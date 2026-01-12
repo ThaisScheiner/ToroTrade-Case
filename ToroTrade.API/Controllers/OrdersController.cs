@@ -35,6 +35,13 @@ namespace ToroTrade.API.Controllers
                 Timestamp = DateTime.UtcNow
             });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetOrders()
+        {
+            var orders = await _service.GetAllOrdersAsync();
+            return Ok(orders);
+        }
     }
 
     // DTO (Data Transfer Object) - O modelo do JSON que chega
