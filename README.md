@@ -27,21 +27,23 @@ graph LR
     Worker[Background Worker] -- Lê Fila --> Channel
     Worker -- Processa (Delay B3) --> Worker
     Worker -- Atualiza Status --> DB
-	
 ```
 
-## 📚 Documentação da API (Endpoints)
 
+📚 Documentação da API (Endpoints)
 Abaixo estão os exemplos de como utilizar as rotas disponíveis.
 
-### 1️⃣ Criar Nova Ordem (Compra)
+1️⃣ Criar Nova Ordem (Compra)
 Envia uma ordem para processamento assíncrono.
 
-* **Rota:** `POST /api/Orders`
-* **Status Sucesso:** `202 Accepted`
+Rota: POST /api/Orders
 
-**Body (JSON):**
-```json
+Status Sucesso: 202 Accepted
+
+Body (JSON):
+
+JSON
+```
 {
   "symbol": "PETR4",
   "quantity": 100,
@@ -98,7 +100,6 @@ JSON
     "status": "Executed"
   }
 ]
-
 🛠️ Tecnologias Utilizadas
 Linguagem: C# (.NET 9)
 
@@ -138,21 +139,25 @@ Clone o repositório:
 
 ```Bash
 
-git clone https://github.com/ThaisScheiner/ToroTrade-Case.git
+git clone [https://github.com/ThaisScheiner/ToroTrade-Case.git](https://github.com/ThaisScheiner/ToroTrade-Case.git)
 ```
+
 
 Restaure os pacotes:
 
 ```Bash
 
 dotnet restore
-
 ```
+
 Execute a API: Defina o projeto ToroTrade.API como inicialização e pressione F5 (ou execute dotnet run na pasta da API).
 
 ```Bash
+
 dotnet run --project ToroTrade.API
 ```
+
+
 Acesse o Swagger: O navegador abrirá automaticamente em: https://localhost:7091/swagger
 
 🧪 Testando a Aplicação
@@ -163,14 +168,14 @@ Abra o Swagger.
 Faça uma requisição POST em /api/Orders com o seguinte JSON:
 
 JSON
-```bash
+```
 {
   "symbol": "PETR4",
   "quantity": 100,
   "price": 38.50
 }
-
 ```
+
 Resposta Imediata: A API retornará 202 Accepted.
 
 Verifique o Console: Você verá os logs coloridos do Worker processando a ordem em segundo plano:
