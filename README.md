@@ -30,29 +30,26 @@ graph LR
 	
 ```
 
-📚 Documentação da API (Endpoints)
+## 📚 Documentação da API (Endpoints)
+
 Abaixo estão os exemplos de como utilizar as rotas disponíveis.
 
-1️. Criar Nova Ordem (Compra)
+### 1️⃣ Criar Nova Ordem (Compra)
 Envia uma ordem para processamento assíncrono.
 
-Rota: POST /api/Orders
+* **Rota:** `POST /api/Orders`
+* **Status Sucesso:** `202 Accepted`
 
-Status Sucesso: 202 Accepted
-
-Body (JSON):
-
-JSON
-```Bash
+**Body (JSON):**
+```json
 {
   "symbol": "PETR4",
   "quantity": 100,
   "price": 38.50
 }
-
 ```
 
-2️. Listar Todas as Ordens
+2️⃣ Listar Todas as Ordens
 Retorna o histórico completo de transações.
 
 Rota: GET /api/Orders
@@ -79,7 +76,7 @@ JSON
     "status": "Executed"
   }
 ]
-3️. Buscar por Ativo (Symbol)
+3️⃣ Buscar por Ativo (Symbol)
 Filtra as ordens pelo código da ação. A busca é Case Insensitive (aceita "petr4", "PETR4" ou "Petr").
 
 Rota: GET /api/Orders/{symbol}
@@ -153,6 +150,9 @@ dotnet restore
 ```
 Execute a API: Defina o projeto ToroTrade.API como inicialização e pressione F5 (ou execute dotnet run na pasta da API).
 
+```Bash
+dotnet run --project ToroTrade.API
+```
 Acesse o Swagger: O navegador abrirá automaticamente em: https://localhost:7091/swagger
 
 🧪 Testando a Aplicação
