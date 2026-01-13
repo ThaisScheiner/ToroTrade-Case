@@ -2,18 +2,18 @@
 
 Este projeto é uma API de simulação de Home Broker, desenvolvida para demonstrar o processamento de altas cargas de ordens de compra de ações de forma assíncrona e desacoplada.
 
-O objetivo principal é resolver o problema de latência em horários de pico (abertura de mercado), onde a API não pode travar esperando o processamento da B3. Para isso, utilizamos uma arquitetura orientada a eventos com processamento em background.
+O objetivo principal é resolver o problema de latência em horários de pico, utilizando uma arquitetura orientada a eventos com processamento em background (Non-blocking I/O).
 
 ---
 
 ## 🚀 Arquitetura e Fluxo de Dados
 
-O projeto segue os princípios da **Clean Architecture** e **SOLID**, dividindo responsabilidades em camadas distintas:
+O projeto segue os princípios da **Clean Architecture** e **SOLID**:
 
-1.  **API (Entrada):** O cliente envia uma ordem de compra (`POST /api/Orders`).
-2.  **Validação & Fila:** A API valida a requisição e a coloca imediatamente em uma **Fila em Memória** (`System.Threading.Channels`), retornando `202 Accepted` instantaneamente para o usuário.
-3.  **Worker (Processamento):** Um serviço em background (`BackgroundService`) fica monitorando a fila. Assim que uma ordem chega, ele a consome.
-4.  **Persistência:** O Worker processa a regra de negócio (simulando o tempo de resposta da Bolsa de Valores) e atualiza o status no Banco de Dados.
+1.  **API (Entrada):** O cliente envia uma ordem (`POST`) ou consulta dados (`GET`).
+2.  **Fila (Channel):** Para compras, a API valida e coloca na fila em memória, retornando `202 Accepted` imediatamente.
+3.  **Worker (Processamento):** Um serviço em background consome a fila, processa a regra de negócio (simulando delay da B3) e atualiza o banco.
+4.  **Consulta (Query):** Os endpoints de leitura acessam o banco diretamente para entregar dados em tempo real.
 
 ### 📊 Diagrama do Fluxo
 
@@ -29,6 +29,78 @@ graph LR
     Worker -- Atualiza Status --> DB
 	
 ```
+
+📚 Documentação da API (Endpoints)
+Abaixo estão os exemplos de como utilizar as rotas disponíveis.
+
+1️. Criar Nova Ordem (Compra)
+Envia uma ordem para processamento assíncrono.
+
+Rota: POST /api/Orders
+
+Status Sucesso: 202 Accepted
+
+Body (JSON):
+
+JSON
+```Bash
+{
+  "symbol": "PETR4",
+  "quantity": 100,
+  "price": 38.50
+}
+
+```
+
+2️. Listar Todas as Ordens
+Retorna o histórico completo de transações.
+
+Rota: GET /api/Orders
+
+Status Sucesso: 200 OK
+
+Response (JSON):
+
+JSON
+
+[
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "symbol": "PETR4",
+    "quantity": 100,
+    "price": 38.50,
+    "status": "Executed"
+  },
+  {
+    "id": "a1b2c3d4-e5f6-7890-a1b2-c3d4e5f67890",
+    "symbol": "VALE3",
+    "quantity": 50,
+    "price": 65.20,
+    "status": "Executed"
+  }
+]
+3️. Buscar por Ativo (Symbol)
+Filtra as ordens pelo código da ação. A busca é Case Insensitive (aceita "petr4", "PETR4" ou "Petr").
+
+Rota: GET /api/Orders/{symbol}
+
+Exemplo: GET /api/Orders/PETR
+
+Status Sucesso: 200 OK
+
+Response (JSON):
+
+JSON
+
+[
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "symbol": "PETR4",
+    "quantity": 100,
+    "price": 38.50,
+    "status": "Executed"
+  }
+]
 
 🛠️ Tecnologias Utilizadas
 Linguagem: C# (.NET 9)
