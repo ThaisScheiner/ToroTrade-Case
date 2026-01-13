@@ -29,21 +29,24 @@ graph LR
     Worker -- Atualiza Status --> DB
 ```
 
+---
 
-📚 Documentação da API (Endpoints)
+## 📚 Documentação da API (Endpoints)
+
 Abaixo estão os exemplos de como utilizar as rotas disponíveis.
 
-1️⃣ Criar Nova Ordem (Compra)
+<br>
+
+### 1️⃣ Criar Nova Ordem (Compra)
+
 Envia uma ordem para processamento assíncrono.
 
-Rota: POST /api/Orders
+* **Rota:** `POST /api/Orders`
+* **Status Sucesso:** `202 Accepted`
 
-Status Sucesso: 202 Accepted
+**Body (JSON):**
 
-Body (JSON):
-
-JSON
-```
+```json
 {
   "symbol": "PETR4",
   "quantity": 100,
@@ -51,17 +54,20 @@ JSON
 }
 ```
 
-2️⃣ Listar Todas as Ordens
+<br>
+
+---
+
+### 2️⃣ Listar Todas as Ordens
+
 Retorna o histórico completo de transações.
 
-Rota: GET /api/Orders
+* **Rota:** `GET /api/Orders`
+* **Status Sucesso:** `200 OK`
 
-Status Sucesso: 200 OK
+**Response (JSON):**
 
-Response (JSON):
-
-JSON
-
+```json
 [
   {
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -78,19 +84,23 @@ JSON
     "status": "Executed"
   }
 ]
-3️⃣ Buscar por Ativo (Symbol)
-Filtra as ordens pelo código da ação. A busca é Case Insensitive (aceita "petr4", "PETR4" ou "Petr").
+```
 
-Rota: GET /api/Orders/{symbol}
+<br>
 
-Exemplo: GET /api/Orders/PETR
+---
 
-Status Sucesso: 200 OK
+### 3️⃣ Buscar por Ativo (Symbol)
 
-Response (JSON):
+Filtra as ordens pelo código da ação. A busca é **Case Insensitive** (aceita "petr4", "PETR4" ou "Petr").
 
-JSON
+* **Rota:** `GET /api/Orders/{symbol}`
+* **Exemplo:** `GET /api/Orders/PETR`
+* **Status Sucesso:** `200 OK`
 
+**Response (JSON):**
+
+```json
 [
   {
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -100,95 +110,98 @@ JSON
     "status": "Executed"
   }
 ]
-🛠️ Tecnologias Utilizadas
-Linguagem: C# (.NET 9)
+```
 
-Tipo de Projeto: Web API (ASP.NET Core)
+<br>
 
-Arquitetura: Clean Architecture (Onion Architecture)
+---
 
-Banco de Dados: In-Memory Database (EF Core) para alta velocidade em testes.
+## 🛠️ Tecnologias Utilizadas
 
-Mensageria: System.Threading.Channels (Alta performance intra-processo).
+* **Linguagem:** C# (.NET 9)
+* **Tipo de Projeto:** Web API (ASP.NET Core)
+* **Arquitetura:** Clean Architecture (Onion Architecture)
+* **Banco de Dados:** In-Memory Database (EF Core) para alta velocidade em testes.
+* **Mensageria:** System.Threading.Channels (Alta performance intra-processo).
+* **Documentação:** Swagger (OpenAPI).
+* **Logs:** Serilog (Logs estruturados no console).
 
-Documentação: Swagger (OpenAPI).
+---
 
-Logs: Serilog (Logs estruturados no console).
+## 📦 Pacotes NuGet Instalados
 
-📦 Pacotes NuGet Instalados
 Abaixo, a lista de dependências externas utilizadas em cada camada do sistema:
 
-1. ToroTrade.API (Interface)
-Swashbuckle.AspNetCore (v6.6.2): Para gerar a interface visual de documentação (Swagger).
+### 1. ToroTrade.API (Interface)
+* **`Swashbuckle.AspNetCore` (v6.6.2):** Para gerar a interface visual de documentação (Swagger).
+* **`Serilog.AspNetCore`:** Para observabilidade e logs detalhados do processamento do Worker.
 
-Serilog.AspNetCore: Para observabilidade e logs detalhados do processamento do Worker.
+### 2. ToroTrade.Infrastructure (Dados e Integrações)
+* **`Microsoft.EntityFrameworkCore.InMemory`:** Simula um banco de dados SQL na memória RAM, permitindo testes rápidos sem precisar instalar SQL Server local.
+* **`Microsoft.Extensions.Caching.Abstractions`:** Interfaces para implementar padrões de Cache (simulando Redis).
 
-2. ToroTrade.Infrastructure (Dados e Integrações)
-Microsoft.EntityFrameworkCore.InMemory: Simula um banco de dados SQL na memória RAM, permitindo testes rápidos sem precisar instalar SQL Server local.
+---
 
-Microsoft.Extensions.Caching.Abstractions: Interfaces para implementar padrões de Cache (simulando Redis).
+## ⚙️ Como Rodar o Projeto
 
-⚙️ Como Rodar o Projeto
-Pré-requisitos
-Visual Studio 2022 ou VS Code.
+### Pré-requisitos
+* Visual Studio 2022 ou VS Code.
+* .NET SDK 9 instalado.
 
-.NET SDK 9 instalado.
+### Passo a Passo
 
-Passo a Passo
-Clone o repositório:
+1. **Clone o repositório:**
+   ```bash
+   git clone [https://github.com/ThaisScheiner/ToroTrade-Case.git](https://github.com/ThaisScheiner/ToroTrade-Case.git)
+   ```
 
-```Bash
+2. **Restaure os pacotes:**
+   ```bash
+   dotnet restore
+   ```
 
-git clone [https://github.com/ThaisScheiner/ToroTrade-Case.git](https://github.com/ThaisScheiner/ToroTrade-Case.git)
-```
+3. **Execute a API:**
+   Defina o projeto `ToroTrade.API` como inicialização e pressione `F5` (ou execute `dotnet run` na pasta da API).
+   ```bash
+   dotnet run --project ToroTrade.API
+   ```
 
+4. **Acesse o Swagger:**
+   O navegador abrirá automaticamente em: `https://localhost:7091/swagger`
 
-Restaure os pacotes:
+---
 
-```Bash
+## 🧪 Testando a Aplicação
 
-dotnet restore
-```
-
-Execute a API: Defina o projeto ToroTrade.API como inicialização e pressione F5 (ou execute dotnet run na pasta da API).
-
-```Bash
-
-dotnet run --project ToroTrade.API
-```
-
-
-Acesse o Swagger: O navegador abrirá automaticamente em: https://localhost:7091/swagger
-
-🧪 Testando a Aplicação
 Para testar o fluxo assíncrono:
 
-Abra o Swagger.
+1. Abra o Swagger.
+2. Faça uma requisição **POST** em `/api/Orders` com o seguinte JSON:
 
-Faça uma requisição POST em /api/Orders com o seguinte JSON:
+   ```json
+   {
+     "symbol": "PETR4",
+     "quantity": 100,
+     "price": 38.50
+   }
+   ```
 
-JSON
-```
-{
-  "symbol": "PETR4",
-  "quantity": 100,
-  "price": 38.50
-}
-```
+3. **Resposta Imediata:** A API retornará `202 Accepted`.
+4. **Verifique o Console:** Você verá os logs coloridos do Worker processando a ordem em segundo plano:
 
-Resposta Imediata: A API retornará 202 Accepted.
+   > 🚀 Worker de Processamento iniciado...
+   > 📥 Processando ordem...
+   > ✅ Ordem EXECUTADA com sucesso!
 
-Verifique o Console: Você verá os logs coloridos do Worker processando a ordem em segundo plano:
+---
 
-🚀 Worker de Processamento iniciado... 📥 Processando ordem... ✅ Ordem EXECUTADA com sucesso!
+## 🧠 Conceitos Aplicados (Diferenciais Técnicos)
 
-🧠 Conceitos Aplicados (Diferenciais Técnicos)
-Injeção de Dependência (DI): Uso de Containers de DI nativos do .NET (Scoped para Repositories, Singleton para a Fila).
+* **Injeção de Dependência (DI):** Uso de Containers de DI nativos do .NET (`Scoped` para Repositories, `Singleton` para a Fila).
+* **Producer/Consumer Pattern:** Implementação clássica de sistemas distribuídos usando Channels.
+* **Hosted Services:** Uso de `IHostedService` para tarefas que rodam durante todo o ciclo de vida da aplicação.
+* **Assincronismo (Async/Await):** Para não bloquear threads durante operações de I/O.
 
-Producer/Consumer Pattern: Implementação clássica de sistemas distribuídos usando Channels.
+---
 
-Hosted Services: Uso de IHostedService para tarefas que rodam durante todo o ciclo de vida da aplicação.
-
-Assincronismo (Async/Await): Para não bloquear threads durante operações de I/O.
-
-Desenvolvido como case técnico de estudo em Arquitetura de Software.
+**Desenvolvido como case técnico de estudo em Arquitetura de Software.**
